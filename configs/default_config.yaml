@@ -1,0 +1,152 @@
+# Configuration for Federated Learning LLM Fine-tuning
+# Copy this file and modify as needed
+
+# Model Configuration
+model:
+  name: "Qwen/Qwen3-4B-Base"  # or "Qwen/Qwen3-8B-Base"
+  max_seq_length: 1536
+  trust_remote_code: true
+
+# LoRA Configuration
+lora:
+  r: 16                    # LoRA rank
+  alpha: 32                # LoRA alpha (typically 2*r)
+  dropout: 0.05
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+# Quantization
+quantization:
+  load_in_4bit: true
+  bnb_4bit_use_double_quant: true  # nested quantization
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_compute_dtype: "auto"   # auto-detect bfloat16/float16
+
+# Training Configuration
+training:
+  # Basic parameters
+  num_epochs: 3
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 8
+  
+  # Optimization
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  warmup_ratio: 0.03
+  lr_scheduler_type: "cosine"
+  optim: "paged_adamw_8bit"
+  max_grad_norm: 1.0
+  
+  # Memory optimization
+  gradient_checkpointing: true
+  fp16: false              # Set by GPU capability
+  bf16: false              # Set by GPU capability
+  
+  # Logging
+  logging_steps: 10
+  save_strategy: "steps"
+  save_steps: 50
+  eval_strategy: "steps"
+  eval_steps: 50
+  save_total_limit: 3
+  
+  # Best model
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+
+# Federated Learning Configuration
+federated:
+  num_clients: 2
+  num_rounds: 3
+  local_epochs: 3
+  
+  # Client selection
+  fraction_fit: 1.0        # Fraction of clients for training
+  fraction_evaluate: 1.0   # Fraction of clients for evaluation
+  min_fit_clients: 2       # Minimum clients per round
+  min_evaluate_clients: 2
+  min_available_clients: 2
+  
+  # Algorithm-specific parameters
+  fedprox:
+    mu: 0.01              # Proximal term weight
+  
+  fedadam:
+    beta1: 0.9
+    beta2: 0.99
+    tau: 0.001            # Server learning rate
+    epsilon: 1.0e-8
+
+# Data Configuration
+data:
+  train_file: "data/train_data.json"
+  valid_file: "data/valid_data.json"
+  test_file: "data/test_data.json"
+  
+  # Federated data
+  client_data_dir: "data"
+  client_data_format: "client_{id}.json"
+  
+  # Preprocessing
+  shuffle: true
+  seed: 42
+
+# Evaluation Configuration
+evaluation:
+  # GPT-based evaluation
+  gpt_model: "gpt-4o-mini"
+  temperature: 0
+  max_tokens: 1000
+  
+  # Metrics
+  compute_metrics: true
+  metrics:
+    - overall_score
+    - count_accuracy
+    - type_classification
+    - content_quality
+    - duplication_control
+  
+  # Export
+  export_predictions: true
+  export_report: true
+
+# Output Configuration
+output:
+  base_dir: "./java_error_federated_results"
+  save_model: true
+  save_optimizer: false
+  save_training_history: true
+
+# Hardware Configuration
+hardware:
+  num_gpus: 2
+  parallel_mode: "data_parallel"  # or "model_parallel"
+  mixed_precision: "auto"         # auto, fp16, bf16, no
+  
+# Monitoring
+monitoring:
+  use_wandb: false
+  wandb_project: "federated-llm"
+  wandb_entity: null
+  use_tensorboard: true
+  tensorboard_dir: "./logs"
+
+# Miscellaneous
+misc:
+  seed: 42
+  deterministic: true
+  cudnn_benchmark: false
+  report_to: ["tensorboard"]  # or ["wandb", "tensorboard"]
+  dataloader_num_workers: 4
+  dataloader_pin_memory: true
