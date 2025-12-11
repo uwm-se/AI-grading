@@ -202,11 +202,16 @@ For questions and discussions, please open an issue or contact via email.
 If you use this code in your research, please cite:
 
 ```bibtex
-@software{federated_llm_java_error,
-  author = {Lei},
-  title = {Federated Learning for LLM Fine-tuning on Java Error Classification},
-  year = {2024},
-  url = {https://github.com/yourusername/federated-llm-java-error-classification}
+@inproceedings{yao2026java,
+  author    = {Lei Yao and Hiba Alsghaier and Tian Zhao},
+  title     = {Enhancing Java Grading Through Large Language Models},
+  booktitle = {Proceedings of the 41st ACM/SIGAPP Symposium on Applied Computing (SAC '26)},
+  year      = {2026},
+  pages     = {1--4},
+  address   = {Thessaloniki, Greece},
+  publisher = {ACM},
+  doi       = {10.1145/3748522.3780023},
+  url       = {https://doi.org/10.1145/3748522.3780023}
 }
 ```
 
