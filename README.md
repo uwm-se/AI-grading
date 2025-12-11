@@ -207,7 +207,7 @@ If you use this code in your research, please cite:
   title     = {Enhancing Java Grading Through Large Language Models},
   booktitle = {Proceedings of the 41st ACM/SIGAPP Symposium on Applied Computing (SAC '26)},
   year      = {2026},
-  pages     = {1--4},
+  pages     = {3},
   address   = {Thessaloniki, Greece},
   publisher = {ACM},
   doi       = {10.1145/3748522.3780023},
