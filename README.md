@@ -122,14 +122,13 @@ python src/evaluation/evaluate_fewshot.py
 
 ### Performance Comparison
 
-| Method | Test Score (GPT-4o-mini) | Training Time |
-|--------|--------------------------|---------------|
-| Few-shot (0-shot) | 8.47/10 | N/A |
-| Centralized (HF) | 8.89/10 | ~45 min |
-| Centralized (Unsloth) | 8.95/10 | ~30 min |
-| FedAvg | 8.76/10 | ~52 min |
-| FedProx | 8.81/10 | ~54 min |
-| FedAdam | 8.92/10 | ~48 min |
+| Method | Error Count Accuracy | Error Type Precision | Explanation Quality |
+|--------|---------------------|---------------------|-------------------|
+| Base Model | 3.28 | 3.84 | 3.12 |
+| Centralized | 8.53 | 4.91 | 6.0 |
+| FedAvg | 7.8 | 4.67 | 5.73 |
+| FedProx | 7.58 | 4.26 | 5.26 |
+| FedAdam | 6.23 | 5.21 | 4.97 |
 
 *Results based on Qwen3-4B-Base with LoRA fine-tuning*
 
